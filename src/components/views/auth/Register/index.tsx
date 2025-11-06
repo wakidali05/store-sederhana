@@ -2,6 +2,8 @@ import { useRouter } from "next/router";
 import styles from "./register.module.scss";
 import Link from "next/link";
 import { FormEvent, useState } from "react";
+import Input from "@/components/ui/Input";
+import Button from "@/components/ui/Button";
 
 const RegisterView = () => {
   const { push } = useRouter();
@@ -46,65 +48,17 @@ const RegisterView = () => {
       {error && <p className={styles.register__error}>{error}</p>}
       <div className={styles.register__form}>
         <form onSubmit={handleSubmit}>
-          <div className={styles.register__form__item}>
-            <label
-              htmlFor="fullname"
-              className={styles.register__form__item__label}
-            >
-              Fullname
-            </label>
-            <input
-              type="text"
-              id="fullname"
-              name="fullname"
-              className={styles.register__form__item__input}
-            />
-          </div>
-          <div className={styles.register__form__item}>
-            <label
-              htmlFor="email"
-              className={styles.register__form__item__label}
-            >
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              className={styles.register__form__item__input}
-            />
-          </div>
-          <div className={styles.register__form__item}>
-            <label
-              htmlFor="phone"
-              className={styles.register__form__item__label}
-            >
-              Phone
-            </label>
-            <input
-              type="text"
-              id="phone"
-              name="phone"
-              className={styles.register__form__item__input}
-            />
-          </div>
-          <div className={styles.register__form__item}>
-            <label
-              htmlFor="password"
-              className={styles.register__form__item__label}
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              className={styles.register__form__item__input}
-            />
-          </div>
-          <button className={styles.register__form__button} type="submit">
+          <Input label="Fullname" name="fullname" type="text" />
+          <Input label="Email" name="email" type="email" />
+          <Input label="Phone" name="phone" type="number" />
+          <Input label="Password" name="password" type="password" />
+          <Button
+            variant="primary"
+            className={styles.register__form__button}
+            type="submit"
+          >
             {isLoading ? "Loading..." : "Register"}
-          </button>
+          </Button>
         </form>
       </div>
       <p>

@@ -3,6 +3,8 @@ import styles from "./login.module.scss";
 import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { signIn } from "next-auth/react";
+import Input from "@/components/ui/Input";
+import Button from "@/components/ui/Button";
 
 const LoginView = () => {
   const { push, query } = useRouter();
@@ -46,45 +48,26 @@ const LoginView = () => {
       {error && <p className={styles.login__error}>{error}</p>}
       <div className={styles.login__form}>
         <form onSubmit={handleSubmit}>
-          <div className={styles.login__form__item}>
-            <label htmlFor="email" className={styles.login__form__item__label}>
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              className={styles.login__form__item__input}
-            />
-          </div>
-
-          <div className={styles.login__form__item}>
-            <label
-              htmlFor="password"
-              className={styles.login__form__item__label}
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              className={styles.login__form__item__input}
-            />
-          </div>
-          <button className={styles.login__form__button} type="submit">
+          <Input label="Email" name="email" type="email" />
+          <Input label="Password" name="password" type="password" />
+          <Button
+            variant="primary"
+            className={styles.login__form__button}
+            type="submit"
+          >
             {isLoading ? "Loading..." : "Login"}
-          </button>
+          </Button>
         </form>
         <hr className={styles.login__form__divider} />
         <div className={styles.login__form__other}>
-          <button
+          <Button
             type="button"
+            variant="primary"
             onClick={() => signIn("google", { callbackUrl, redirect: false })}
             className={styles.login__form__other__button}
           >
             <i className="bxl bx-google"></i> Login with Google
-          </button>
+          </Button>
         </div>
       </div>
       <p>
