@@ -4,6 +4,7 @@ import type { AppProps } from "next/app";
 import { Lato } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import Navbar from "@/components/layouts/Navbar";
+import Head from "next/head";
 
 const lato = Lato({
   subsets: ["latin"],
@@ -16,8 +17,14 @@ export default function App({
 }: AppProps) {
   return (
     <SessionProvider session={session}>
-      <Navbar />
+      <Head>
+        <link
+          href="https://cdn.boxicons.com/3.0.3/fonts/basic/boxicons.min.css"
+          rel="stylesheet"
+        ></link>
+      </Head>
       <div className={lato.className}>
+        <Navbar />
         <Component {...pageProps} />
       </div>
     </SessionProvider>
