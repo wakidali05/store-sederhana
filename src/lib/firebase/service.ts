@@ -62,3 +62,5 @@ export async function addData(
       console.log(error);
     });
 }
+
+// register function

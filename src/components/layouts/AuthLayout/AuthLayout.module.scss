@@ -1,0 +1,44 @@
+.auth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  &__title {
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+  &__error {
+    color: red;
+    margin-bottom: 10px;
+  }
+  &__form {
+    width: 30%;
+    padding: 20px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    border-radius: 15px;
+    &__item {
+      display: flex;
+      flex-direction: column;
+      margin: 20px 0;
+      &__label {
+        margin-bottom: 5px;
+        font-weight: 600;
+      }
+      &__input {
+        margin-top: 5px;
+        padding: 10px;
+        border: none;
+        outline: none;
+        background-color: grey;
+        border-radius: 4px;
+      }
+    }
+  }
+  &__link {
+    color: teal;
+    font-weight: bold;
+  }
+}
