@@ -20,13 +20,13 @@ const RegisterView = () => {
     // Handle form submission logic here
     const form = event.target as HTMLFormElement;
     const data = {
-      email: form.email.value,
       fullname: form.fullname.value,
+      email: form.email.value,
       phone: form.phone.value,
       password: form.password.value,
     };
 
-    const result = await authServices.resgisterAccount(data);
+    const result = await authServices.registerAccount(data);
 
     if (result.status === 200) {
       form.reset();
