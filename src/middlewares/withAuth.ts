@@ -1,5 +1,5 @@
 import { getToken } from "next-auth/jwt";
-import { redirect } from "next/dist/server/api-utils";
+
 import {
   NextFetchEvent,
   NextMiddleware,

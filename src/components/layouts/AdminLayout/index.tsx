@@ -20,7 +20,7 @@ const listSidebarItem = [
     url: "/admin/profile",
   },
   {
-    title: "users",
+    title: "Users",
     url: "/admin/users",
   },
 ];
@@ -30,7 +30,7 @@ const AdminLayout = (props: Proptypes) => {
   return (
     <div className={styles.admin}>
       <Sidebar lists={listSidebarItem} />
-      {children}
+      <div className={styles.admin__main}>{children}</div>
     </div>
   );
 };

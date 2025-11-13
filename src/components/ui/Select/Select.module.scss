@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0;
+
+  &__select {
+    margin-top: 5px;
+    padding: 10px;
+    border: none;
+    outline: none;
+    background-color: grey;
+    border-radius: 4px;
+    &:disabled {
+      opacity: 0.7;
+    }
+  }
+}

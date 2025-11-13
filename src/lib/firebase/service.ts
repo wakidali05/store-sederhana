@@ -1,11 +1,13 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
   getFirestore,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import app from "./init";
@@ -63,4 +65,36 @@ export async function addData(
     });
 }
 
-// register function
+// update data
+export async function updateData(
+  collectionName: string,
+  id: string,
+  data: any,
+  callback: Function
+) {
+  const docRef = doc(firestore, collectionName, id);
+  await updateDoc(docRef, data)
+    .then(() => {
+      callback(true);
+    })
+    .catch(() => {
+      callback(false);
+    });
+}
+
+// delete data
+
+export async function deleteData(
+  collectionName: string,
+  id: string,
+  callback: Function
+) {
+  const docRef = doc(firestore, collectionName, id);
+  await deleteDoc(docRef)
+    .then(() => {
+      callback(true);
+    })
+    .catch(() => {
+      callback(false);
+    });
+}
