@@ -1,21 +1,23 @@
 import { useRouter } from "next/router";
 import styles from "./register.module.scss";
-import { FormEvent, useState } from "react";
+import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import authServices from "@/services/auth";
 import AuthLayout from "@/components/layouts/AuthLayout";
 
-const RegisterView = () => {
+const RegisterView = ({
+  setToaster,
+}: {
+  setToaster: Dispatch<SetStateAction<{}>>;
+}) => {
   const { push } = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     setIsLoading(true);
-    setError("");
 
     // Handle form submission logic here
     const form = event.target as HTMLFormElement;
@@ -26,15 +28,29 @@ const RegisterView = () => {
       password: form.password.value,
     };
 
-    const result = await authServices.registerAccount(data);
-
-    if (result.status === 200) {
-      form.reset();
+    try {
+      const result = await authServices.registerAccount(data);
+      if (result.status === 200) {
+        form.reset();
+        setIsLoading(false);
+        push("/auth/login");
+        setToaster({
+          variant: "success",
+          message: "register success",
+        });
+      } else {
+        setIsLoading(false);
+        setToaster({
+          variant: "danger",
+          message: "contact support please",
+        });
+      }
+    } catch (error) {
       setIsLoading(false);
-      push("/auth/login");
-    } else {
-      setIsLoading(false);
-      setError("email already registered");
+      setToaster({
+        variant: "danger",
+        message: "email already registered",
+      });
     }
   };
 
@@ -43,7 +59,7 @@ const RegisterView = () => {
       title="Register"
       link="/auth/login"
       linkText="Have an account? sign in "
-      error={error}
+      setToaster={setToaster}
     >
       <form onSubmit={handleSubmit}>
         <Input label="Fullname" name="fullname" type="text" />

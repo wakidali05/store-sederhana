@@ -11,6 +11,7 @@ export async function signUp(
     role?: string;
     created_at?: Date;
     updated_at?: Date;
+    image?: string;
   },
   callback: Function
 ) {
@@ -21,6 +22,7 @@ export async function signUp(
     if (!userData.role) {
       userData.role = "member";
     }
+    userData.image = "";
     userData.password = await bcrypt.hash(userData.password, 10);
     userData.created_at = new Date();
     userData.updated_at = new Date();
@@ -41,9 +43,11 @@ export async function signIn(email: string) {
 // signin with google function
 export async function loginWithGoogle(
   data: {
+    id?: string;
     email: string;
     role?: string;
     created_at?: Date;
+    image?: string;
     updated_at?: Date;
     password?: string;
   },
@@ -57,8 +61,9 @@ export async function loginWithGoogle(
     data.created_at = new Date();
     data.updated_at = new Date();
     data.password = "";
-    await addData("users", data, (result: boolean) => {
-      if (result) {
+    await addData("users", data, (status: boolean, res: any) => {
+      data.id = res.path.replace("user/", "");
+      if (status) {
         callback(data);
       }
     });

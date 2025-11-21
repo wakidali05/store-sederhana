@@ -1,19 +1,23 @@
 import AdminLayout from "@/components/layouts/AdminLayout";
 import Button from "@/components/ui/Button";
 import styles from "./users.module.scss";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import ModalUpdateUser from "./ModalUpdateUser";
 import ModalDeleteUser from "./ModalDeleteUser";
+import { User } from "@/types/user.type";
+import { useSession } from "next-auth/react";
 
 type PropTypes = {
-  users: any;
+  users: User[];
+  setToaster: Dispatch<SetStateAction<{}>>;
 };
 
 const UsersAdminView = (props: PropTypes) => {
-  const { users } = props;
-  const [modalUpdate, setmodalUpdate] = useState<any>({});
-  const [deletedUser, setdeletedUser] = useState<any>({});
-  const [usersData, setUsersData] = useState([]);
+  const { users, setToaster } = props;
+  const [modalUpdate, setmodalUpdate] = useState<User | {}>({});
+  const [deletedUser, setdeletedUser] = useState<User | {}>({});
+  const [usersData, setUsersData] = useState<User[]>([]);
+  const session: any = useSession();
   useEffect(() => {
     setUsersData(users);
   }, [users]);
@@ -34,7 +38,7 @@ const UsersAdminView = (props: PropTypes) => {
               </tr>
             </thead>
             <tbody>
-              {usersData.map((user: any, index: number) => (
+              {usersData.map((user: User, index: number) => (
                 <tr key={user.id}>
                   <td>{index + 1}</td>
                   <td>{user.fullname}</td>
@@ -72,6 +76,8 @@ const UsersAdminView = (props: PropTypes) => {
           modalUpdate={modalUpdate}
           setmodalUpdate={setmodalUpdate}
           setUsersData={setUsersData}
+          setToaster={setToaster}
+          session={session}
         />
       )}
       {Object.keys(deletedUser).length && (
@@ -79,6 +85,8 @@ const UsersAdminView = (props: PropTypes) => {
           deletedUser={deletedUser}
           setdeletedUser={setdeletedUser}
           setUsersData={setUsersData}
+          setToaster={setToaster}
+          session={session}
         />
       )}
     </>

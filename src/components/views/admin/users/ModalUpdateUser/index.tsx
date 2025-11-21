@@ -3,13 +3,22 @@ import Input from "@/components/ui/Input";
 import Modal from "@/components/ui/Modal";
 import Select from "@/components/ui/Select";
 import userServices from "@/services/user";
+import { User } from "@/types/user.type";
 import { useSession } from "next-auth/react";
-import { FormEvent, useState } from "react";
+import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 
-const ModalUpdateUser = (props: any) => {
-  const { modalUpdate, setmodalUpdate, setUsersData } = props;
+type PropTypes = {
+  setUsersData: Dispatch<SetStateAction<User[]>>;
+  setToaster: Dispatch<SetStateAction<{}>>;
+  modalUpdate: User | any;
+  setmodalUpdate: Dispatch<SetStateAction<{}>>;
+  session: any;
+};
+
+const ModalUpdateUser = (props: PropTypes) => {
+  const { modalUpdate, setmodalUpdate, setUsersData, setToaster, session } =
+    props;
   const [isLoading, setIsLoading] = useState(false);
-  const session: any = useSession();
 
   const handleUpdateUser = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -32,8 +41,16 @@ const ModalUpdateUser = (props: any) => {
       setmodalUpdate({});
       const { data } = await userServices.getAllUsers();
       setUsersData(data.data);
+      setToaster({
+        variant: "success",
+        message: "success update user",
+      });
     } else {
       setIsLoading(false);
+      setToaster({
+        variant: "danger",
+        message: "failed change user",
+      });
     }
   };
   return (
@@ -72,7 +89,7 @@ const ModalUpdateUser = (props: any) => {
           type={""}
         />
         <Button type="submit" variant="secondary">
-          Update
+          {isLoading ? "Updating..." : "Update"}
         </Button>
       </form>
     </Modal>

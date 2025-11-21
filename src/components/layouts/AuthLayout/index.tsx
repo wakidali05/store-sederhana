@@ -1,19 +1,19 @@
+import { Dispatch, SetStateAction } from "react";
 import styles from "./AuthLayout.module.scss";
 import Link from "next/link";
 
 type proptypes = {
   children: React.ReactNode;
-  error?: string;
   title?: string;
   link: string;
   linkText?: string;
+  setToaster: Dispatch<SetStateAction<{}>>;
 };
 const AuthLayout = (props: proptypes) => {
-  const { children, title, error, link, linkText } = props;
+  const { children, title, link, linkText } = props;
   return (
     <div className={styles.auth}>
       <h1 className={styles.auth__title}>{title}</h1>
-      {error && <p className={styles.auth__error}>{error}</p>}
       <div className={styles.auth__form}>{children}</div>
       <p>
         {linkText}

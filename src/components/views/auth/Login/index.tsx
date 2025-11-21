@@ -1,15 +1,18 @@
 import { useRouter } from "next/router";
 import styles from "./login.module.scss";
-import { FormEvent, useState } from "react";
+import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 import { signIn } from "next-auth/react";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import AuthLayout from "@/components/layouts/AuthLayout";
 
-const LoginView = () => {
+const LoginView = ({
+  setToaster,
+}: {
+  setToaster: Dispatch<SetStateAction<{}>>;
+}) => {
   const { push, query } = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const callbackUrl: any = query.callbackUrl || "/";
 
@@ -17,7 +20,6 @@ const LoginView = () => {
     event.preventDefault();
 
     setIsLoading(true);
-    setError("");
 
     // Handle form submission logic here
     const form = event.target as HTMLFormElement;
@@ -32,13 +34,23 @@ const LoginView = () => {
         setIsLoading(false);
         form.reset();
         push(callbackUrl);
+        setToaster({
+          variant: "success",
+          message: "login success",
+        });
       } else {
         setIsLoading(false);
-        setError("Invalid email or password");
+        setToaster({
+          variant: "danger",
+          message: "Email or Password Incorrect",
+        });
       }
     } catch (error) {
       setIsLoading(false);
-      setError("Invalid email or password");
+      setToaster({
+        variant: "danger",
+        message: "login failed, call support",
+      });
     }
   };
 
@@ -47,7 +59,7 @@ const LoginView = () => {
       title="Login"
       link="/auth/register"
       linkText="Do not have an account? sign up "
-      error={error}
+      setToaster={setToaster}
     >
       <form onSubmit={handleSubmit}>
         <Input label="Email" name="email" type="email" />

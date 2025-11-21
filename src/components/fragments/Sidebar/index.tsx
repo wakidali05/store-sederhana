@@ -38,7 +38,7 @@ const Sidebar = (props: Proptypes) => {
       <div className={styles.sidebar__bottom}>
         <Button
           type="button"
-          variant="secondary"
+          variant="primary"
           onClick={() => signOut()}
           className={styles.sidebar__bottom__button}
         >
