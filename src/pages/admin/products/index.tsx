@@ -1,13 +1,21 @@
-import AdminLayout from "@/components/layouts/AdminLayout";
+import ProductsAdminView from "@/components/views/admin/Products";
+import productServices from "@/services/product";
+import { useEffect, useState } from "react";
 
-const AdminProductPage = () => {
+const AdminProductsPage = ({ setToaster }: any) => {
+  const [products, setProducts] = useState([]);
+  const gettAllProducts = async () => {
+    const { data } = await productServices.getAllProducts();
+    setProducts(data.data);
+  };
+  useEffect(() => {
+    gettAllProducts();
+  }, []);
   return (
-    <AdminLayout>
-      <div>
-        <div>AdminProductPage</div>
-      </div>
-    </AdminLayout>
+    <>
+      <ProductsAdminView products={products} setToaster={setToaster} />
+    </>
   );
 };
 
-export default AdminProductPage;
+export default AdminProductsPage;
