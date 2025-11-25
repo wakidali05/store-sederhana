@@ -5,12 +5,14 @@ type Proptypes = {
   name: string;
   type: string;
   placeholder?: string;
-  defaultValue?: string;
+  defaultValue?: string | number;
   disabled?: boolean;
+  onChange?: (e: any) => void;
 };
 
 const Input = (props: Proptypes) => {
-  const { label, name, type, placeholder, defaultValue, disabled } = props;
+  const { label, name, type, placeholder, defaultValue, disabled, onChange } =
+    props;
   return (
     <div className={styles.login__form__item}>
       {label && <label htmlFor={name}>{label}</label>}
@@ -22,6 +24,7 @@ const Input = (props: Proptypes) => {
         className={styles.login__form__item__input}
         defaultValue={defaultValue}
         disabled={disabled}
+        onChange={onChange}
       />
     </div>
   );

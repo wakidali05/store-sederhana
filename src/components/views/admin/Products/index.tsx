@@ -5,6 +5,9 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Image from "next/image";
 import { convertIDR } from "@/utils/currency";
 import { Product } from "@/types/product.type";
+import ModalAddProduct from "./ModalAddProduct";
+import ModalUpdateProduct from "./ModalUpdateProduct";
+import ModalDeleteProduct from "./ModalDeleteProduct";
 
 type PropTypes = {
   products: Product[];
@@ -14,6 +17,9 @@ type PropTypes = {
 const ProductsAdminView = (props: PropTypes) => {
   const { products, setToaster } = props;
   const [productsData, setProductsData] = useState<Product[]>([]);
+  const [modalAddProduct, setModalAddProduct] = useState(false);
+  const [updatedProduct, setUpdatedProduct] = useState<Product | {}>({});
+  const [deletedProduct, setDeletedProduct] = useState<Product | {}>({});
   useEffect(() => {
     setProductsData(products);
   }, [products]);
@@ -22,6 +28,13 @@ const ProductsAdminView = (props: PropTypes) => {
       <AdminLayout>
         <div className={styles.products}>
           <h1>Product Management</h1>
+          <Button
+            variant="primary"
+            className={styles.products__button}
+            onClick={() => setModalAddProduct(true)}
+          >
+            + Add Product
+          </Button>
           <table className={styles.products__table}>
             <thead>
               <tr>
@@ -64,6 +77,7 @@ const ProductsAdminView = (props: PropTypes) => {
                           type="button"
                           variant="primary"
                           className={styles.products__table__action__edit}
+                          onClick={() => setUpdatedProduct(products)}
                         >
                           Update
                         </Button>
@@ -71,6 +85,7 @@ const ProductsAdminView = (props: PropTypes) => {
                           type="button"
                           variant="primary"
                           className={styles.products__table__action__delete}
+                          onClick={() => setDeletedProduct(products)}
                         >
                           Delete
                         </Button>
@@ -93,6 +108,29 @@ const ProductsAdminView = (props: PropTypes) => {
           </table>
         </div>
       </AdminLayout>
+      {modalAddProduct && (
+        <ModalAddProduct
+          setModalAddProduct={setModalAddProduct}
+          setToaster={setToaster}
+          setProductsData={setProductsData}
+        />
+      )}
+      {Object.keys(updatedProduct).length > 0 && (
+        <ModalUpdateProduct
+          setUpdatedProduct={setUpdatedProduct}
+          updatedProduct={updatedProduct}
+          setToaster={setToaster}
+          setProductsData={setProductsData}
+        />
+      )}
+      {Object.keys(deletedProduct).length > 0 && (
+        <ModalDeleteProduct
+          setDeletedProduct={setDeletedProduct}
+          deletedProduct={deletedProduct}
+          setToaster={setToaster}
+          setProductsData={setProductsData}
+        />
+      )}
     </>
   );
 };
