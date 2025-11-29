@@ -31,65 +31,22 @@ const ModalUpdateProduct = (props: propTypes) => {
     setStockCount(newStock);
   };
 
-  const uploadImage = (id: string, form: any) => {
-    const file = form.image?.files[0];
-    const newName = "main." + file.name.split(".")[1];
-    if (file) {
-      uploadFile(
-        id,
-        file,
-        newName,
-        "products",
-        async (status: boolean, newImageURL: string) => {
-          if (status) {
-            const data = {
-              image: newImageURL,
-            };
-            const result = await productServices.updateProduct(
-              id,
-              data,
-              session.data?.accessToken
-            );
-            if (result.status === 200) {
-              setIsLoading(false);
-              setUpdatedProduct(false);
-              setUploadedImage(null);
-              form.reset();
-              setToaster({
-                variant: "success",
-                message: "success add product",
-              });
-              const products = await productServices.getAllProducts();
-              setProductsData(products.data.data);
-            } else {
-              setIsLoading(false);
-              setToaster({
-                variant: "danger",
-                message: "failed to add product",
-              });
-            }
-          } else {
-            setIsLoading(false);
-            setToaster({
-              variant: "danger",
-              message: "failed to add product",
-            });
-          }
-        }
-      );
-    }
-  };
-
   const updateProduct = async (
     form: any,
     newImageURL: string = updatedProduct.image
   ) => {
+    const stock = stockCount.map((stock: { size: string; qty: number }) => {
+      return {
+        size: stock.size,
+        qty: parseInt(`${stock.qty}`),
+      };
+    });
     const data = {
       name: form.name.value,
-      price: form.price.value,
+      price: parseInt(form.price.value),
       category: form.category.value,
       status: form.status.value,
-      stock: stockCount,
+      stock: stock,
       image: newImageURL,
     };
     const result = await productServices.updateProduct(
