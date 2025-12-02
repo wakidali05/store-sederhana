@@ -8,7 +8,7 @@ type propTypes = {
 
 const ProductView = (props: propTypes) => {
   const { products } = props;
-  console.log(products);
+
   return (
     <div className={styles.product}>
       <h1 className={styles.product__title}>

@@ -45,7 +45,6 @@ const CartView = (props: propTypes) => {
     );
     return total;
   };
-  console.log(totalPrize());
   return (
     <div className={styles.cart}>
       <div className={styles.cart__main}>
@@ -54,13 +53,15 @@ const CartView = (props: propTypes) => {
           {cart.map((item: { id: string; size: string; qty: number }) => (
             <Fragment key={`${item.id}-${item.size}`}>
               <div className={styles.cart__main__list__item}>
-                <Image
-                  src={`${getProduct(item.id)?.image}`}
-                  alt="image"
-                  width={200}
-                  height={200}
-                  className={styles.cart__main__list__item__image}
-                />
+                {getProduct(item.id)?.image && (
+                  <Image
+                    src={`${getProduct(item.id)?.image}`}
+                    alt="image"
+                    width={200}
+                    height={200}
+                    className={styles.cart__main__list__item__image}
+                  />
+                )}
                 <div className={styles.cart__main__list__item__info}>
                   <h4 className={styles.cart__main__list__item__info__title}>
                     {getProduct(item.id)?.name}
@@ -80,7 +81,7 @@ const CartView = (props: propTypes) => {
                         name="size"
                         options={getOptionsSize(item.id, item.size)}
                         type="primary"
-                      ></Select>
+                      />
                     </label>
 
                     <label

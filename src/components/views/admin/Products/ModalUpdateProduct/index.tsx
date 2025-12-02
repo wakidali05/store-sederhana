@@ -7,7 +7,6 @@ import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 import { Product } from "@/types/product.type";
 import InputFile from "@/components/ui/InputFile";
 import productServices from "@/services/product";
-import { useSession } from "next-auth/react";
 import { uploadFile } from "@/lib/firebase/service";
 import Image from "next/image";
 type propTypes = {
@@ -23,8 +22,6 @@ const ModalUpdateProduct = (props: propTypes) => {
   const [isLoading, setIsLoading] = useState(false);
   const [stockCount, setStockCount] = useState(updatedProduct.stock);
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
-  const session: any = useSession();
-
   const handleStock = (e: any, i: number, type: string) => {
     const newStock: any = [...stockCount];
     newStock[i][type] = e.target.value;
@@ -44,16 +41,13 @@ const ModalUpdateProduct = (props: propTypes) => {
     const data = {
       name: form.name.value,
       price: parseInt(form.price.value),
+      description: form.description.value,
       category: form.category.value,
       status: form.status.value,
       stock: stock,
       image: newImageURL,
     };
-    const result = await productServices.updateProduct(
-      updatedProduct.id,
-      data,
-      session.data?.accessToken
-    );
+    const result = await productServices.updateProduct(updatedProduct.id, data);
     if (result.status === 200) {
       setIsLoading(false);
       setUpdatedProduct(false);
@@ -121,6 +115,13 @@ const ModalUpdateProduct = (props: propTypes) => {
           type="number"
           placeholder="insert product price"
           defaultValue={updatedProduct.price}
+        />
+        <Input
+          label="Description"
+          name="description"
+          type="text"
+          placeholder="insert product description"
+          defaultValue={updatedProduct.description}
         />
         <Select
           label="Category"

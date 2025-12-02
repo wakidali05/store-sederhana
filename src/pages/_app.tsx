@@ -1,5 +1,4 @@
-import { Session } from "inspector/promises";
-import "../styles/globals.css";
+import "../styles/globals.scss";
 import type { AppProps } from "next/app";
 import { Lato } from "next/font/google";
 import { SessionProvider } from "next-auth/react";

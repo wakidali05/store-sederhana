@@ -7,7 +7,6 @@ import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 import { Product } from "@/types/product.type";
 import InputFile from "@/components/ui/InputFile";
 import productServices from "@/services/product";
-import { useSession } from "next-auth/react";
 import { uploadFile } from "@/lib/firebase/service";
 type propTypes = {
   setModalAddProduct: Dispatch<SetStateAction<boolean>>;
@@ -20,7 +19,6 @@ const ModalAddProduct = (props: propTypes) => {
   const [isLoading, setIsLoading] = useState(false);
   const [stockCount, setStockCount] = useState([{ size: "", qty: 0 }]);
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
-  const session: any = useSession();
 
   const handleStock = (e: any, i: number, type: string) => {
     const newStock: any = [...stockCount];
@@ -42,11 +40,7 @@ const ModalAddProduct = (props: propTypes) => {
             const data = {
               image: newImageURL,
             };
-            const result = await productServices.updateProduct(
-              id,
-              data,
-              session.data?.accessToken
-            );
+            const result = await productServices.updateProduct(id, data);
             if (result.status === 200) {
               setIsLoading(false);
               setModalAddProduct(false);
@@ -90,15 +84,13 @@ const ModalAddProduct = (props: propTypes) => {
     const data = {
       name: form.name.value,
       price: parseInt(form.price.value),
+      description: form.description.value,
       category: form.category.value,
       status: form.status.value,
       stock: stock,
       image: "",
     };
-    const result = await productServices.addProduct(
-      data,
-      session.data?.accessToken
-    );
+    const result = await productServices.addProduct(data);
     if (result.status === 200) {
       uploadImage(result.data.data.id, form);
     }
@@ -119,6 +111,12 @@ const ModalAddProduct = (props: propTypes) => {
           name="price"
           type="number"
           placeholder="insert product price"
+        />
+        <Input
+          label="Description"
+          name="description"
+          type="text"
+          placeholder="insert product description"
         />
         <Select
           label="Category"

@@ -11,12 +11,10 @@ type PropTypes = {
   setToaster: Dispatch<SetStateAction<{}>>;
   modalUpdate: User | any;
   setmodalUpdate: Dispatch<SetStateAction<{}>>;
-  session: any;
 };
 
 const ModalUpdateUser = (props: PropTypes) => {
-  const { modalUpdate, setmodalUpdate, setUsersData, setToaster, session } =
-    props;
+  const { modalUpdate, setmodalUpdate, setUsersData, setToaster } = props;
   const [isLoading, setIsLoading] = useState(false);
 
   const handleUpdateUser = async (event: FormEvent<HTMLFormElement>) => {
@@ -28,11 +26,7 @@ const ModalUpdateUser = (props: PropTypes) => {
       role: form.role.value,
     };
 
-    const result = await userServices.updateUsers(
-      modalUpdate.id,
-      data,
-      session.data?.accessToken
-    );
+    const result = await userServices.updateUsers(modalUpdate.id, data);
 
     if (result.status === 200) {
       form.reset();

@@ -17,7 +17,7 @@ type propTypes = {
 
 const DetailProductPage = (props: propTypes) => {
   const { product, cart, productId, setToaster } = props;
-  const { status, data: session }: any = useSession();
+  const { status }: any = useSession();
   const router = useRouter();
   const [selectedSize, setSelectedSize] = useState("");
 
@@ -46,12 +46,9 @@ const DetailProductPage = (props: propTypes) => {
         ];
       }
       try {
-        const result = await userServices.addToCart(
-          {
-            carts: newCart,
-          },
-          session?.accessToken
-        );
+        const result = await userServices.addToCart({
+          carts: newCart,
+        });
         if (result.status === 200) {
           setSelectedSize("");
           setToaster({
@@ -87,6 +84,9 @@ const DetailProductPage = (props: propTypes) => {
           <h3 className={styles.detail__main__right__price}>
             {convertIDR(product?.price)}
           </h3>
+          <p className={styles.detail__main__right__description}>
+            {product?.description}
+          </p>
           <p className={styles.detail__main__right__subtitle}>Select Size</p>
           <div className={styles.detail__main__right__size}>
             {product?.stock?.map((item: { size: string; qty: number }) => (
